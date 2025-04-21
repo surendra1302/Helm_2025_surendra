@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: python-reach-frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      containers:
+      - name: frontend
+        image: surendra1302/python-reach-frontend:v1
+        env:
+        - name: REACT_APP_BACKEND_SERVER
+          value: "http://a71560e3285074ab28d7a23a6fc544bf-73a4e67d13c597dd.elb.us-east-1.amazonaws.com/api/"
