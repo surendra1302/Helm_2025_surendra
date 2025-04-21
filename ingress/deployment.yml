@@ -1,0 +1,66 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: python-reach-backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+      - name: backend
+        image: hhgsharish/python-reach-backend:latest
+
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend-service
+spec:
+  selector:
+    app: backend
+  ports:
+  - protocol: TCP
+    port: 5005
+    targetPort: 5005
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: python-reach-frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      containers:
+      - name: frontend
+        image: hhgsharish/python-reach-frontend:v1
+        env: 
+        - name: REACT_APP_BACKEND_SERVER
+          value: "http:///a40e9bbc4271d4791b5429079c1457c1-2b3b5558fddb48e0.elb.us-east-1.amazonaws.com/api/"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend-service
+spec:
+  selector:
+    app: frontend
+  ports:
+  - protocol: TCP
+    port: 3000
+    targetPort: 3000
