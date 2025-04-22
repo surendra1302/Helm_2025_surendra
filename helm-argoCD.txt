@@ -1,0 +1,36 @@
+curl -u sure96ndra@gmail.com:cmVmdGtuOjAxOjE3NzY4NDY0Mjc6bjNvdm41SUZkWmVhNFRYZEh1aE0yTjJZNmhK   -T jenkins-0.1.0.tgz   https://trial7uibba.jfrog.io/artifactory/jenkins-helm-helm/
+
+
+
+
+
+cmVmdGtuOjAxOjE3NzY4NDY0Mjc6bjNvdm41SUZkWmVhNFRYZEh1aE0yTjJZNmhK
+
+
+
+
+
+
+helm repo add jenkins-helm-helm-local https://trial7uibba.jfrog.io/artifactory/api/helm/jenkins-helm-helm-local --username sure96ndra@gmail.com --password cmVmdGtuOjAxOjE3NzY4NTA0NjU6SU91RWp1NGRuMHN3UTNIV0JvTkdjOER4R25ss
+helm repo update
+helm pull jenkins-helm-helm-local/jenkins
+helm install my-jenkins jenkins-helm-helm-local/jenkins --version 0.1.0
+
+
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+argo-cd
+username: admin
+password: qluTEVTvdawcHyPC
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+argocd installation:
+
+mkdir -p charts/argo-cd
+helm repo update
+kubectl create namespace argocd
+kubectl get svc -n argocd
+helm ls -n argocd
+helm delete argocd -n argocd
+kubectl delete crds applications.argoproj.io appprojects.argoproj.io
+kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d
