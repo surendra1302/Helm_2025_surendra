@@ -1,0 +1,27 @@
+Control-plane:
+
+kubectl drain <control-node> --ignore-daemonsets
+sudo apt-mark unhold kubelet kubeadm kubectl
+curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.29/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+echo 'deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.29/deb/ /' | sudo tee /etc/apt/sources.list.d/kubernetes.list
+sudo apt-get update
+sudo apt-get install -y kubelet=1.29.* kubeadm=1.29.* kubectl=1.29.*
+kubeadm upgrade apply v1.29.15
+sudo apt-mark hold kubelet kubeadm kubectl
+sudo systemctl daemon-reload
+sudo systemctl restart kubelet
+kubectl uncordon <control-node>
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+worker-nodes:
+
+kubectl drain <worker1> --ignore-daemonsets --delete-emptydir-data
+sudo apt-mark unhold kubeadm kubelet kubectl
+curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.29/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+echo 'deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.29/deb/ /' | sudo tee /etc/apt/sources.list.d/kubernetes.list
+sudo apt-get update
+sudo apt-get install -y kubelet=1.29.* kubeadm=1.29.* kubectl=1.29.*
+sudo apt-mark hold kubelet kubeadm kubectl
+sudo systemctl daemon-reload
+sudo systemctl restart kubelet
+kubectl uncordon <worker1>
+
